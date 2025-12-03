@@ -25,9 +25,10 @@ exports.getMaterialesByCategoria = async (req, res) => {
         let params = [categoria_id];
 
         if (tipoId !== null) {
-            query += " AND tipo_construccion_id = ?";
-            params.push(tipoId);
-        }
+        query += " AND (tipo_construccion_id = ? OR tipo_construccion_id IS NULL)";
+        params.push(tipoId);
+    }
+
 
         console.log("QUERY FINAL:", query, params);
 
