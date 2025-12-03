@@ -1,3 +1,4 @@
+// cotizador-back/controllers/proyecto.controller.js
 const pool = require("../config/db");
 
 exports.crearProyecto = async (req, res) => {

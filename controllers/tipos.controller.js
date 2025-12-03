@@ -1,3 +1,4 @@
+// cotizador-back/controllers/tipos.controller.js
 const pool = require("../config/db");
 
 exports.getTiposConstruccion = async (req, res) => {

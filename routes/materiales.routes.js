@@ -1,3 +1,4 @@
+// cotizador-back/routes/materiales.routes.js
 const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/materiales.controller");

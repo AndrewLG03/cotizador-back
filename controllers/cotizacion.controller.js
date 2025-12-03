@@ -1,3 +1,4 @@
+// cotizador-back/controllers/cotizacion.controller.js
 const pool = require("../config/db");
 
 exports.guardarCotizacion = async (req, res) => {
