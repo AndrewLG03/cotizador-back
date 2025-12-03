@@ -1,3 +1,4 @@
+// cotizador-back/config/db.js
 const mysql = require("mysql2/promise");
 
 const pool = mysql.createPool({
