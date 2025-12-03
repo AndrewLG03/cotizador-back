@@ -6,36 +6,29 @@ exports.getMaterialesByCategoria = async (req, res) => {
         const { categoria_id } = req.params;
         const { tipo } = req.query; // liviano | madera | cemento
 
-        // Validar tipo
-        if (!tipo) {
-            return res.status(400).json({ error: "Debe enviar ?tipo=liviano|madera|cemento" });
+        let tipoId = null;
+
+        if (tipo) {
+            const [tipoRow] = await pool.query(
+                "SELECT id FROM tipos_construccion WHERE nombre = ?",
+                [tipo]
+            );
+            if (tipoRow.length > 0) tipoId = tipoRow[0].id;
         }
 
-        // Obtener ID del tipo (1, 2 o 3)
-        const [tipoRow] = await pool.query(
-            "SELECT id FROM tipos_construccion WHERE nombre = ?",
-            [tipo]
-        );
+        let query = "SELECT * FROM materiales WHERE categoria_id = ?";
+        const params = [categoria_id];
 
-        if (tipoRow.length === 0) {
-            return res.status(400).json({ error: "Tipo de construcción inválido" });
+        if (tipoId !== null) {
+            query += " AND tipo_construccion_id = ?";
+            params.push(tipoId);
         }
 
-        const tipo_id = tipoRow[0].id;
-
-        // FILTRO CORRECTO
-        const [rows] = await pool.query(
-            `SELECT *
-             FROM materiales
-             WHERE categoria_id = ?
-             AND tipo_construccion_id = ?`,
-            [categoria_id, tipo_id]
-        );
+        const [rows] = await pool.query(query, params);
 
         res.json(rows);
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: "Error obteniendo materiales" });
-        console.log(err);
     }
 };
-
